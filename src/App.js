@@ -18,11 +18,12 @@ const Login = React.lazy(() => import('./pages/login/Login'));
 // <Route exact path="/login" component={Login} />
 
 class App extends Component {
-	
+
   render() {
     return (
 	    <div>
     		<HashRouter>
+	    		<div><Link to="/login" >Login</Link></div>
 		    	<React.Suspense fallback={loading}>
 			      <Switch>
 			        <Route exact path="/login" name="Login Page" render={props => <Login {...props}/>} />
