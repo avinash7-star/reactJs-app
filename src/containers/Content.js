@@ -1,9 +1,8 @@
 import React, { Suspense } from 'react'
 import {
   Redirect,
-  Switch
+  Switch, Route
 } from 'react-router-dom'
-
   
 const loading = (
   <div className="pt-3 text-center">
@@ -13,7 +12,7 @@ const loading = (
 
 const Content = () => {
   return (
-      <Suspense fallback={loading}>
+      <Suspense>
         <Switch>
           <Redirect from="/" to="/dashboard" />
         </Switch>

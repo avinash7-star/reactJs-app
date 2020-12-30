@@ -11,7 +11,7 @@ import {
 const Layout = () => {
   return (
     <div className="c-app c-default-layout">
-      <div className="c-wrapper">
+      <div>
         <Header/>
         <div className="c-body"><Content/></div>
         <Footer/>
