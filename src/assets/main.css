@@ -1,0 +1,20 @@
+.footer {
+	position: absolute;
+  bottom: 0;
+}
+
+.justify-content-center {
+	align-items: center !important;
+	flex-direction: row !important;
+	display: flex;
+	min-height: 100vh;
+}
+
+.user-img{
+  width: 100px;
+  height: 100px;
+  border-radius: 50%!important;
+  border: black solid 2px;
+  float: right;
+  cursor: pointer;
+}
