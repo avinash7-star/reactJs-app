@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+
 // export default function Login() {
 //   return (
 //     <div>
@@ -9,10 +10,12 @@ import { Link } from 'react-router-dom';
 // }
 
 const validateForm = (errors) => {
-  let valid = true;
+  let valid = false;
   Object.values(errors).forEach(
     (val) => {
-    	val.length > 0 && (valid = false)
+      if (typeof val === 'boolean' && val) {
+        valid = true;
+      }
     }
   );
   return valid;
@@ -31,39 +34,55 @@ class Login extends Component {
         isValidPassword: true,
         email: '',
         isValidEmail: true
+      },
+      formValues: {
+        password: '',
+        email: '',
       }
     };
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange = (event) => {
     event.preventDefault();
     const { name, value } = event.target;
-    let errors = this.state.errors;
+    let { errors, formValues } = this.state;
     switch (name) {
       case 'email': 
-          value.length === 0 ? errors.isValidEmail = true : 
-          errors.isValidEmail = false;
+          value.length === 0 ? errors.isValidEmail = true : errors.isValidEmail = false;
+          formValues.email = value;
         break;
 
       case 'password':
       	value.length === 0 ? errors.isValidPassword = true : errors.isValidPassword = false;
+        formValues.password = value;
         break;
 
       default:
         break;
     }
-    this.setState({errors, [name]: value});
+    this.setState({errors, [name]: value, formValues});
   }
 
-  handleSubmit = (event) => {
+
+  loginSubmitHandler = () => {
+    if (this.state.formValid) {
+      return;
+    }
+    console.log('state ->', this.state);
+  }
+
+  handleSubmit(event) {
     event.preventDefault();
     this.setState({submitted: true});
-    // this.setState({formValid: validateForm(this.state.errors)});
-    // this.setState({errorCount: countErrors(this.state.errors)});
+    let valid = validateForm(this.state.errors);
+    this.setState({formValid: valid}, ()=>{
+      this.loginSubmitHandler();
+    });
   }
 
 	render(){
-		const {errors, formValid, submitted} = this.state;
+		const {errors, formValues, submitted} = this.state;
 		return (
 			<div className="justify-content-center row">
 		    <div className="col-md-8">
@@ -75,6 +94,7 @@ class Login extends Component {
 					    	className={`form-control ${submitted && errors.isValidEmail ? 'is-invalid' : ''}`}
 					    	name="email"
 					    	placeholder="Enter email" 
+                value={formValues.email}
 					    	onChange={this.handleChange}/>
 					    <div className="invalid-feedback">
 					        <div>Email is required</div>
@@ -86,6 +106,7 @@ class Login extends Component {
 					    <input type="password" name='password' 
 					    	className={`form-control ${submitted && errors.isValidPassword ? 'is-invalid' : ''}`} 
 					    	placeholder="Password" 
+                value={formValues.password}
 					    	onChange={this.handleChange}/>
 					    <div className="invalid-feedback">
 					      {(submitted && errors.isValidPassword) &&  <div>Password is required</div>}
